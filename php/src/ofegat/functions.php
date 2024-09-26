@@ -20,8 +20,16 @@ function comprobadorIntent($palabra, $letraIntroducida, &$arrayLetrasAdivinar) {
     return $encontrada;
 }
 
-function palabra($palabra) {
-    return $palabra;
+function mostrarArrayCorrecto($arrayGuiones) {
+    echo "<p>";
+    foreach ($arrayGuiones as $letra) {
+        if ($letra != '_') {
+            echo "<span class='correct'>$letra</span>"; // Para la letra acertada en verde
+        } else {
+            echo "<span class='guion'>_</span>"; // El guion para letra no acertada
+        }
+    }
+    echo "</p>";
 }
 
 ?>

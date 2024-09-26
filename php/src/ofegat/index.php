@@ -5,7 +5,13 @@
     <meta charset="utf-8">
     <title>HTML</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        .correct { color: green; }
+        .incorrect { color: red; }
+    </style>
+
 </head>
+
 
 <body>
     <?php
@@ -15,20 +21,37 @@
 
     $cantidadLetras = strlen($palabra);
     $arrayGuiones = array_fill(0, $cantidadLetras, '_');
-
-    //Más tarde, en la letra tengo que poner con el formulario, la letra que introduzca
-    if (comprobadorIntent($palabra, "e", $arrayGuiones) == false) {
-        echo "No existe";
-    } else {
-        echo "Existe";
-    }
-
+    
     //Para mostrar el array de guiones.
-    mostrarArray($arrayGuiones);
+    //mostrarArray($arrayGuiones);
 
-    
-    
-    ?>
+
+    //Formulario
+    if ($_SERVER["REQUEST_METHOD"] == "POST") {
+        
+        $letra = htmlspecialchars($_POST['letra']);
+
+        if (!empty($_POST['letra']) && strlen($letra) == 1) {
+            
+            if (comprobadorIntent($palabra, $letra, $arrayGuiones) == false) {
+                echo "<p class='incorrect'>No existe la letra $letra</p>";
+            } 
+
+            //Para mostrar el array de guiones.
+            //mostrarArray($arrayGuiones);
+
+        } else {
+            echo "<p>Coloca una letra</p>";
+        }
+    } 
+
+    mostrarArrayCorrecto($arrayGuiones);
+        ?>
+    <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
+        <label for="letra">Letra:</label>
+        <input type="text" id="letra" name="letra"><br>
+        <input type="submit" value="Enviar" name="Enviar">
+    </form>
 
 </body>
 
