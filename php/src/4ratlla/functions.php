@@ -1,5 +1,4 @@
 <?php
-
 function inicilitzarGraella() {
     $graella = array_fill(0, 6, array_fill(0, 7, 0));
     return $graella;
@@ -29,7 +28,6 @@ function pintarGraella($graella) {
     echo '</table>';
 }
 
-
 function ferMoviment(&$graella, $columna, $jugadorActual) {
     for ($i = count($graella) - 1; $i >= 0; $i--) {
         if ($graella[$i][$columna] == 0) {
@@ -38,5 +36,4 @@ function ferMoviment(&$graella, $columna, $jugadorActual) {
         }
     }
 }
-
 ?>
