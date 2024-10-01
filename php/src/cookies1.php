@@ -1,7 +1,7 @@
 <?php
 setcookie(
-    'nom_cookie',
-    'valor_cookie',
+    'nom_cookie', //nom cookie
+    'Joan', //valora a guardar
     [
         'expires' => time() + 3600, // 1 hora
         'path' => '/',

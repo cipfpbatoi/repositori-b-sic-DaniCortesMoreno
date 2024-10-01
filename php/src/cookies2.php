@@ -1,4 +1,5 @@
 <?php
+//Para accedir a la cookie
 // Llegir el valor de la cookie
 if (isset($_COOKIE['nom_usuari'])) {
     $nomUsuari = $_COOKIE['nom_usuari'];
