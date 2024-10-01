@@ -22,8 +22,6 @@
     $cantidadLetras = strlen($palabra);
     $arrayGuiones = array_fill(0, $cantidadLetras, '_');
     
-    //Para mostrar el array de guiones.
-    //mostrarArray($arrayGuiones);
 
 
     //Formulario
@@ -36,9 +34,6 @@
             if (comprobadorIntent($palabra, $letra, $arrayGuiones) == false) {
                 echo "<p class='incorrect'>No existe la letra $letra</p>";
             } 
-
-            //Para mostrar el array de guiones.
-            //mostrarArray($arrayGuiones);
 
         } else {
             echo "<p>Coloca una letra</p>";

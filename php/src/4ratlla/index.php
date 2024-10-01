@@ -1,37 +1,4 @@
-<?php
-session_start();
 
-include 'functions.php';
-
-// Reinicialitzar la sessió si és una sol·licitud GET
-if ($_SERVER["REQUEST_METHOD"] == "GET") {
-    session_unset(); // Eliminar totes les variables de sessió
-    session_destroy(); // Destruir la sessió
-    session_start(); // Tornar a iniciar la sessió per començar de nou
-    $_SESSION['graella'] = inicilitzarGraella(); // Inicialitzar la graella
-    $_SESSION['jugador'] = 1; // Inicialitzar el jugador
-}
-
-// Comprovar si s'ha enviat un moviment
-if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['columna'])) {
-    $columna = intval(htmlspecialchars($_POST['columna']));
-    $jugador = $_SESSION['jugador'];
-
-    // Realitzar el moviment per al jugador actual
-    ferMoviment($_SESSION['graella'], $columna, $jugador);
-
-    // Canviar el jugador
-    if ($jugador == 1) {
-        $_SESSION['jugador'] = 2;
-    } else {
-        $_SESSION['jugador'] = 1;
-    }
-}
-
-// Pintar la graella
-$graella = $_SESSION['graella'];
-pintarGraella($graella);
-?>
 
 <!DOCTYPE html>
 <html lang="es">
@@ -75,7 +42,40 @@ pintarGraella($graella);
 </head>
 
 <body>
+<?php
+session_start();
 
+include 'functions.php';
+
+// Reinicialitzar la sessió si és una sol·licitud GET
+if ($_SERVER["REQUEST_METHOD"] == "GET") {
+    session_unset(); // Eliminar totes les variables de sessió
+    session_destroy();
+    session_start(); 
+    $_SESSION['graella'] = inicilitzarGraella();
+    $_SESSION['jugador'] = 1;
+}
+
+// Comprovar si s'ha enviat un moviment
+if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['columna'])) {
+    $columna = intval(htmlspecialchars($_POST['columna']));
+    $jugador = $_SESSION['jugador'];
+
+    // Realitzar el moviment per al jugador actual
+    ferMoviment($_SESSION['graella'], $columna, $jugador);
+
+    // Canviar el jugador
+    if ($jugador == 1) {
+        $_SESSION['jugador'] = 2;
+    } else {
+        $_SESSION['jugador'] = 1;
+    }
+}
+
+// Pintar la graella
+$graella = $_SESSION['graella'];
+pintarGraella($graella);
+?>
     <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
         <label for="columna">Columna (0-6):</label>
         <input type="number" id="columna" name="columna" min="0" max="6" required>
