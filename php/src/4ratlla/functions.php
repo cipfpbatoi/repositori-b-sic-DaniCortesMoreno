@@ -9,18 +9,12 @@ function pintarGraella($graella) {
     foreach ($graella as $fila) {
         echo '<tr>';
         foreach ($fila as $celda) {
-            $classe = '';
-            switch ($celda) {
-                case 0:
-                    $classe = 'buid';
-                    break;
-                case 1:
-                    $classe = 'player1';
-                    break;
-                case 2:
-                    $classe = 'player2';
-                    break;
-            }
+            $classe = match ($celda) {
+                  0 =>  'buid',
+                  1 =>   'player1',
+                  2 =>  'player2' ,
+            };
+            
             echo '<td class="'.$classe.'"></td>';
         }
         echo '</tr>';

@@ -1,3 +1,17 @@
+<?php
+    session_start();
+    if(isset($_SESSION['user'])) {
+        echo "Welcome, " . $_SESSION['user'];
+        if (isset($_SESSION['historial'])) {
+            array_push($_SESSION['historial'], "Ofegat");
+        }
+        
+    } else {
+        header("Location: /sessions/ejercicio5/login.php");
+        exit();
+}
+
+?>
 <!DOCTYPE html>
 <html lang="es">
 
@@ -46,6 +60,8 @@
         <label for="letra">Letra:</label>
         <input type="text" id="letra" name="letra"><br>
         <input type="submit" value="Enviar" name="Enviar">
+        <a href="logout.php">Tancar sessió</a>
+        <a href="/sessions/ejercicio5/bienvenida.php">Ir a la página de bienvenida</a><br>
     </form>
 
 </body>
