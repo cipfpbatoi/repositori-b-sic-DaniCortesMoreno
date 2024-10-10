@@ -20,7 +20,7 @@ function comprobadorIntent($palabra, $letraIntroducida, &$arrayLetrasAdivinar) {
     return $encontrada;
 }
 
-function mostrarArrayCorrecto($arrayGuiones) {
+function mostrarArrayCorrecto(&$arrayGuiones) {
     echo "<p>";
     foreach ($arrayGuiones as $letra) {
         if ($letra != '_') {
@@ -30,6 +30,22 @@ function mostrarArrayCorrecto($arrayGuiones) {
         }
     }
     echo "</p>";
+}
+
+function comprobarFinPartida($arrayGuiones, $numErrores) {
+    $guiones = 0;
+    foreach ($arrayGuiones as $letra) {
+        if ($letra == '_') {
+            $guiones++;
+        }
+    }
+
+    if ($numErrores == 5) {
+        return 2;
+    } 
+    if ($guiones == 0) {
+        return 1;
+    }
 }
 
 ?>
