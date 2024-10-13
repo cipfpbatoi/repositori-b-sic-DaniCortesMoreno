@@ -1,40 +1,48 @@
 <?php
 session_start();
 include 'functions.php';
+
 if (isset($_SESSION['user'])) {
     if (isset($_SESSION['historial'])) {
         array_push($_SESSION['historial'], "4Ratlla");
     }
-
 } else {
     header("Location: /projecte3/login.php");
     exit();
 }
 
-
-
-// Reinicialitzar la sessió si és una sol·licitud GET
-if ($_SERVER["REQUEST_METHOD"] == "GET") {
-    if (!isset($_SESSION['graella'])) {
-        $_SESSION['graella'] = inicilitzarGraella();
-    }
-
+// Reinicialitzar només si és la primera vegada o si es demana reiniciar explícitament
+if (!isset($_SESSION['graella'])) {
+    $_SESSION['graella'] = inicilitzarGraella();
     $_SESSION['jugador'] = 1;
+    $_SESSION['fi_del_joc'] = false;
+}
+
+// Si es prem el botó de reiniciar, reiniciar la partida
+if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['reiniciar']) && $_POST['reiniciar'] == '1') {
+    $_SESSION['graella'] = inicilitzarGraella();
+    $_SESSION['jugador'] = 1;
+    $_SESSION['fi_del_joc'] = false;
 }
 
 // Comprovar si s'ha enviat un moviment
-if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['columna'])) {
+if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['columna']) && !$_SESSION['fi_del_joc']) {
     $columna = intval(htmlspecialchars($_POST['columna']));
     $jugador = $_SESSION['jugador'];
 
     // Realitzar el moviment per al jugador actual
     ferMoviment($_SESSION['graella'], $columna, $jugador);
 
-    // Canviar el jugador
-    if ($jugador == 1) {
-        $_SESSION['jugador'] = 2;
+    // Comprovar si el jugador actual ha guanyat
+    if (esGuanyador($_SESSION['graella'], $jugador)) {
+        echo "<p>Jugador $jugador ha guanyat!</p>";
+        $_SESSION['fi_del_joc'] = true;
+    } elseif (esTaulerPle($_SESSION['graella'])) {
+        echo "<p>El joc ha acabat en empat!</p>";
+        $_SESSION['fi_del_joc'] = true;
     } else {
-        $_SESSION['jugador'] = 1;
+        // Canviar el jugador si el joc continua
+        $_SESSION['jugador'] = ($jugador == 1) ? 2 : 1;
     }
 }
 
@@ -45,7 +53,6 @@ pintarGraella($graella);
 
 <!DOCTYPE html>
 <html lang="es">
-
 <head>
     <meta charset="utf-8">
     <title>4 en Ratlla</title>
@@ -89,7 +96,13 @@ pintarGraella($graella);
     <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
         <label for="columna">Columna (0-6):</label>
         <input type="number" id="columna" name="columna" min="0" max="6" required>
-        <button type="submit">Fer Moviment</button>
+        <button type="submit" <?php if ($_SESSION['fi_del_joc']) echo 'disabled'; ?>>Fer Moviment</button>
+    </form>
+
+    <!-- Añadir un botón para reiniciar la partida -->
+    <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
+        <input type="hidden" name="reiniciar" value="1">
+        <button type="submit">Reiniciar Partida</button>
     </form>
 
     <section>
@@ -100,6 +113,6 @@ pintarGraella($graella);
     </section>
 
     <p>Welcome, <?= $_SESSION['user'] ?></p>
-</body>
 
+</body>
 </html>

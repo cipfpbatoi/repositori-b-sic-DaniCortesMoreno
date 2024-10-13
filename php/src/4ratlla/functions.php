@@ -30,4 +30,60 @@ function ferMoviment(&$graella, $columna, $jugadorActual) {
         }
     }
 }
+
+function esGuanyador($graella, $jugador) {
+    $files = count($graella);
+    $columnes = count($graella[0]);
+
+    // Comprovar horitzontals
+    for ($i = 0; $i < $files; $i++) {
+        for ($j = 0; $j < $columnes - 3; $j++) {
+            if ($graella[$i][$j] == $jugador && $graella[$i][$j + 1] == $jugador &&
+                $graella[$i][$j + 2] == $jugador && $graella[$i][$j + 3] == $jugador) {
+                return true;
+            }
+        }
+    }
+
+    // Comprovar verticals
+    for ($i = 0; $i < $files - 3; $i++) {
+        for ($j = 0; $j < $columnes; $j++) {
+            if ($graella[$i][$j] == $jugador && $graella[$i + 1][$j] == $jugador &&
+                $graella[$i + 2][$j] == $jugador && $graella[$i + 3][$j] == $jugador) {
+                return true;
+            }
+        }
+    }
+
+    // Comprovar diagonals ascendents
+    for ($i = 3; $i < $files; $i++) {
+        for ($j = 0; $j < $columnes - 3; $j++) {
+            if ($graella[$i][$j] == $jugador && $graella[$i - 1][$j + 1] == $jugador &&
+                $graella[$i - 2][$j + 2] == $jugador && $graella[$i - 3][$j + 3] == $jugador) {
+                return true;
+            }
+        }
+    }
+
+    // Comprovar diagonals descendents
+    for ($i = 0; $i < $files - 3; $i++) {
+        for ($j = 0; $j < $columnes - 3; $j++) {
+            if ($graella[$i][$j] == $jugador && $graella[$i + 1][$j + 1] == $jugador &&
+                $graella[$i + 2][$j + 2] == $jugador && $graella[$i + 3][$j + 3] == $jugador) {
+                return true;
+            }
+        }
+    }
+
+    return false;
+}
+
+function esTaulerPle($graella) {
+    foreach ($graella as $fila) {
+        if (in_array(0, $fila)) {
+            return false;
+        }
+    }
+    return true;
+}
 ?>
